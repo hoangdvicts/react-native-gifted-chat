@@ -14,6 +14,7 @@ import {
   StyleProp,
   ViewStyle,
   Platform,
+  Keyboard
 } from 'react-native'
 
 import LoadEarlier from './LoadEarlier'
@@ -341,32 +342,37 @@ export default class MessageContainer<
         {this.state.showScrollBottom && this.props.scrollToBottom
           ? this.renderScrollToBottomWrapper()
           : null}
-        <FlatList
-          ref={this.props.forwardRef}
-          extraData={[this.props.extraData, this.props.isTyping]}
-          keyExtractor={this.keyExtractor}
-          enableEmptySections
-          automaticallyAdjustContentInsets={false}
-          inverted={inverted}
-          data={this.props.messages}
-          style={styles.listStyle}
-          contentContainerStyle={styles.contentContainerStyle}
-          renderItem={this.renderRow}
-          {...this.props.invertibleScrollViewProps}
-          ListEmptyComponent={this.renderChatEmpty}
-          ListFooterComponent={
-            inverted ? this.renderHeaderWrapper : this.renderFooter
-          }
-          ListHeaderComponent={
-            inverted ? this.renderFooter : this.renderHeaderWrapper
-          }
-          onScroll={this.handleOnScroll}
-          scrollEventThrottle={100}
-          onLayout={this.onLayoutList}
-          onEndReached={this.onEndReached}
-          onEndReachedThreshold={0.1}
-          {...this.props.listViewProps}
-        />
+           {this.props.messages.length > 0 ?  
+            <FlatList
+            ref={this.props.forwardRef}
+            extraData={[this.props.extraData, this.props.isTyping]}
+            keyExtractor={this.keyExtractor}
+            enableEmptySections
+            automaticallyAdjustContentInsets={false}
+            inverted={inverted}
+            data={this.props.messages}
+            style={styles.listStyle}
+            contentContainerStyle={styles.contentContainerStyle}
+            renderItem={this.renderRow}
+            {...this.props.invertibleScrollViewProps}
+            ListEmptyComponent={this.renderChatEmpty}
+            ListFooterComponent={
+              inverted ? this.renderHeaderWrapper : this.renderFooter
+            }
+            ListHeaderComponent={
+              inverted ? this.renderFooter : this.renderHeaderWrapper
+            }
+            onScroll={this.handleOnScroll}
+            scrollEventThrottle={100}
+            onLayout={this.onLayoutList}
+            onEndReached={this.onEndReached}
+            onEndReachedThreshold={0.1}
+            {...this.props.listViewProps}
+          />
+            :
+            <View onTouchEnd={Keyboard.dismiss} style={{flex:1}}></View>
+           }
+       
       </View>
     )
   }
